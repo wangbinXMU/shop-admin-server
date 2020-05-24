@@ -1,6 +1,4 @@
 var path = require('path');
-// var roles_controller = require("../controllers/roles");
-
 var path = require("path");
 
 global.service_caches = {};
@@ -16,7 +14,7 @@ global.service_auth_fn = null;
  * @param {[type]} serviceModule 服务模块
  * @param {[type]} origFunc      原始方法
  */
-function Invocation(serviceName,actionName,serviceModule,origFunc) {
+function Invocation(serviceName, actionName, serviceModule, origFunc) {
 	return function() {
 		var origArguments = arguments;
 		return function(req,res,next) {
@@ -37,16 +35,17 @@ function Invocation(serviceName,actionName,serviceModule,origFunc) {
 
 // 获取服务对象
 module.exports.getService = function(serviceName) {
-
+	console.log('global.service_caches', global.service_caches);
 	if(global.service_caches[serviceName]) {
 		return global.service_caches[serviceName];
 	}
 
 	var servicePath = path.join(process.cwd(),"services",serviceName);
 	
+	
 	var serviceModule = require(servicePath);
 	if(!serviceModule) {
-		console.log("模块没有被发现");
+		console.log(`模块${serviceName}未被找到！`);
 		return null;
 	}
 	global.service_caches[serviceName] = {};
@@ -56,7 +55,7 @@ module.exports.getService = function(serviceName) {
 	console.log("*****************************************");
 	for(actionName in serviceModule) {
 
-		if(serviceModule && serviceModule[actionName] && typeof(serviceModule[actionName]) == "function") {
+		if(serviceModule && serviceModule[actionName] && typeof(serviceModule[actionName]) === "function") {
 			var origFunc = serviceModule[actionName];
 			global.service_caches[serviceName][actionName] = Invocation(serviceName,actionName,serviceModule,origFunc);
 			console.log("action => %s",actionName);

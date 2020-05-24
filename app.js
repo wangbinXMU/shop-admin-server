@@ -3,6 +3,7 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var path = require("path");
 var Password = require("node-php-password");
+require('date-utils');
 // 路由加载
 var mount = require("mount-routes");
 

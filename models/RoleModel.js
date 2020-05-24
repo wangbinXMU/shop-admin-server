@@ -1,4 +1,4 @@
-module.exports = function(db,callback){
+module.exports = function(db, callback){
 	// 用户模型
 	db.define("RoleModel",{
 		role_id : {type: 'serial', key: true},

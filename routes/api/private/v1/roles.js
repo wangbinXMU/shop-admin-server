@@ -32,10 +32,11 @@ router.post("/",
 	},
 	// 处理业务逻辑
 	function(req,res,next) {
+		let createRoleFunc = roleServ.createRole;
 		roleServ.createRole({
 			"roleName":req.body.roleName,
 			"roleDesc":req.body.roleDesc
-		},function(err,role){
+		}, function(err,role){
 			if(err) return res.sendResult(null,400,err);
 			res.sendResult(role,201,"创建成功");
 		})(req,res,next);
